@@ -74,6 +74,7 @@ func main() {
 	ticker := time.NewTicker(175 * time.Second)
 	defer ticker.Stop()
 
+	awsCloud.GuardDuty(ctx)
 	for {
 		select {
 		case <-ctx.Done():
