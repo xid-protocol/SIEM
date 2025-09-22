@@ -2,8 +2,6 @@ package aws
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -62,7 +60,7 @@ func (c *AWSCloud) GuardDuty(ctx context.Context) {
 	}
 	output, err := svc.ListFindings(input)
 	if err != nil {
-		log.Println("Error listing GuardDuty findings:", err)
+		logx.Errorf("Error listing GuardDuty findings: %v", err)
 
 	}
 
@@ -73,13 +71,13 @@ func (c *AWSCloud) GuardDuty(ctx context.Context) {
 		}
 		findingOutput, err := svc.GetFindings(findingInput)
 		if err != nil {
-			log.Println(err)
+			logx.Errorf("Error getting GuardDuty findings: %v", err)
 		}
 		// log.Println(findingOutput)
 
 		findings := findingOutput.Findings
 		for _, finding := range findings {
-			fmt.Println(finding)
+			logx.Infof("GuardDuty事件: %v", finding)
 			c.GuardDutyChan <- GdEvent{
 				EventSource: "aws_guarduty",
 				InstanceId:  *finding.Resource.InstanceDetails.InstanceId,
