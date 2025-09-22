@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/guardduty"
+	"github.com/colin-404/logx"
 	"github.com/spf13/viper"
 )
 
@@ -34,6 +35,7 @@ func (c *AWSCloud) GuardDuty(ctx context.Context) {
 	// if err != nil {
 	// 	panic(err)
 	// }
+	logx.Infof("开始获取GuardDuty事件")
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String(viper.GetString("AWS.DefaultRegion")),
 		// 不设置 Credentials，让 AWS SDK 自动使用 IAM Role
